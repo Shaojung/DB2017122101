@@ -88,6 +88,12 @@ class MyLocationListener implements LocationListener {
         double lng = location.getLongitude();
 
         Log.d("LOC", "Change!! " + String.valueOf(lat) + "," + String.valueOf(lng));
+        Location loc101 = new Location("MYLOC");
+        loc101.setLatitude(25.0340661);
+        loc101.setLongitude(121.5643117);
+
+        double distance = loc101.distanceTo(location);
+        Log.d("LOC", "Distance:" + distance);
     }
 
     @Override
