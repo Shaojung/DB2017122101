@@ -1,7 +1,10 @@
 package com.example.student.db2017122101;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,7 +15,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.io.IOException;
 import java.security.Permission;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     LocationManager lm;
@@ -23,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-        listener = new MyLocationListener();
+        listener = new MyLocationListener(this);
     }
 
     public void click1(View v) {
@@ -81,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
 }
 
 class MyLocationListener implements LocationListener {
+    Context context;
+    public MyLocationListener(Context context)
+    {
+        this.context = context;
+    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -94,6 +105,17 @@ class MyLocationListener implements LocationListener {
 
         double distance = loc101.distanceTo(location);
         Log.d("LOC", "Distance:" + distance);
+
+        Geocoder geocoder = new Geocoder(context, Locale.TRADITIONAL_CHINESE);
+        try {
+            List<Address> addr = geocoder.getFromLocationName("板橋區中山路一段10號", 1);
+            Address a0 = addr.get(0);
+            Log.d("LOC", "" + a0.getLatitude() + "," + a0.getLongitude());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
