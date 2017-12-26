@@ -15,6 +15,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.security.Permission;
 import java.util.List;
@@ -91,7 +101,9 @@ class MyLocationListener implements LocationListener {
     public MyLocationListener(Context context)
     {
         this.context = context;
+        queue = Volley.newRequestQueue(context);
     }
+    RequestQueue queue;
 
     @Override
     public void onLocationChanged(Location location) {
@@ -115,6 +127,31 @@ class MyLocationListener implements LocationListener {
             e.printStackTrace();
         }
 
+        StringRequest request = new StringRequest("https://maps.googleapis.com/maps/api/elevation/json?locations=25.0080382,121.4599224&key=AIzaSyB03rADXr_cx1UI3qvEe6BVR6Vda4XxQs0"
+                , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    JSONArray array = obj.getJSONArray("results");
+                    double alt = array.getJSONObject(0).getDouble("elevation");
+                    Log.d("ALT:", String.valueOf(alt));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+
+        queue.add(request);
+        queue.start();
 
     }
 
