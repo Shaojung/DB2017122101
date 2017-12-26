@@ -31,6 +31,9 @@ import java.security.Permission;
 import java.util.List;
 import java.util.Locale;
 
+// https://maps.googleapis.com/maps/api/place/textsearch/json?query=%E9%A4%90%E5%BB%B3+%E5%BA%9C%E4%B8%AD%E7%AB%99&key=AIzaSyB03rADXr_cx1UI3qvEe6BVR6Vda4XxQs0
+
+
 public class MainActivity extends AppCompatActivity {
     LocationManager lm;
     MyLocationListener listener;
