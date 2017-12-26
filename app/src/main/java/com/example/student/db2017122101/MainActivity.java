@@ -145,14 +145,12 @@ class MyLocationListener implements LocationListener {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Log.d("NET", "Error:" + error.toString());
                     }
                 }
         );
-
         queue.add(request);
         queue.start();
-
     }
 
     @Override
