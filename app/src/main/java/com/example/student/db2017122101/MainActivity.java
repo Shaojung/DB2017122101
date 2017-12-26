@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,13 +34,15 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     LocationManager lm;
     MyLocationListener listener;
-
+    TextView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-        listener = new MyLocationListener(this);
+        tv = (TextView) findViewById(R.id.textView);
+        listener = new MyLocationListener(this, tv);
+
     }
 
     public void click1(View v) {
@@ -98,10 +101,12 @@ public class MainActivity extends AppCompatActivity {
 
 class MyLocationListener implements LocationListener {
     Context context;
-    public MyLocationListener(Context context)
+    TextView tv;
+    public MyLocationListener(Context context, TextView tv)
     {
         this.context = context;
         queue = Volley.newRequestQueue(context);
+        this.tv = tv;
     }
     RequestQueue queue;
 
@@ -136,6 +141,7 @@ class MyLocationListener implements LocationListener {
                     JSONArray array = obj.getJSONArray("results");
                     double alt = array.getJSONObject(0).getDouble("elevation");
                     Log.d("ALT:", String.valueOf(alt));
+                    tv.setText(String.valueOf(alt));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
